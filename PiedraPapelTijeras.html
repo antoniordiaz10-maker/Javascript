@@ -2,121 +2,110 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Piedra, Papel o Tijeras</title>
+<meta charset="UTF-8">
+<title>Piedra, Papel o Tijeras</title>
 
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
-            font-family: Arial, Helvetica, sans-serif;
-            color: white;
-        }
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
 
-        .container {
-            background: #3a3a3a;
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-        }
+.container {
+    background: #3a3a3a;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+}
 
-        h1 {
-            margin-bottom: 30px;
-        }
+input[type="image"]{
+    width:120px;
+    height:120px;
+    margin:10px;
+    border-radius:20px;
+    border:3px solid #555;
+    cursor:pointer;
+    transition:all 0.2s ease;
+}
 
-        input[type="image"] {
-            width: 120px;
-            height: 120px;
-            margin: 10px;
-            border-radius: 20px;
-            border: 3px solid #555;
-            object-fit: cover;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
+input[type="image"]:hover{
+    transform:translateY(-4px) scale(1.05);
+}
 
-        input[type="image"]:hover {
-            transform: translateY(-4px) scale(1.05);
-            border-color: #888;
-        }
+.resultado{
+    margin-top:25px;
+    font-size:18px;
+}
 
-        input[type="image"]:active {
-            transform: scale(0.95);
-        }
+#contador{
+    font-size:20px;
+    margin-bottom:20px;
+    display:block;
+}
+</style>
 
-        .resultado {
-            margin-top: 25px;
-            font-size: 18px;
-        }
+<script>
 
-        #contador {
-            font-size: 20px;
-            margin-bottom: 20px;
-            display: block;
-        }
-    </style>
+let puntosJugador = 0;
+let puntosCPU = 0;
 
-    <script>
+function jugar(eleccionJugador){
 
-        let puntosJugador = 0;
-        let puntosCPU = 0;
+    const opciones = ["Piedra 🪨","Papel 📄","Tijeras ✂️"];
+    const eleccionCPU = opciones[Math.floor(Math.random()*3)];
 
-        function jugar(eleccionJugador) {
+    let resultado = "";
 
-            const opciones = ["Piedra", "Papel", "Tijeras"];
-            const eleccionCPU = opciones[Math.floor(Math.random() * 3)];
+    if(eleccionJugador === eleccionCPU){
+        resultado = "Empate";
+    }
+    else if(
+        (eleccionJugador==="Piedra 🪨" && eleccionCPU==="Tijeras ✂️") ||
+        (eleccionJugador==="Papel 📄" && eleccionCPU==="Piedra 🪨") ||
+        (eleccionJugador==="Tijeras ✂️" && eleccionCPU==="Papel 📄")
+    ){
+        resultado = "¡Has ganado!";
+        puntosJugador++;
+    }
+    else{
+        resultado = "Has perdido";
+        puntosCPU++;
+    }
 
-            let resultado = "";
+    document.getElementById("resultado").innerHTML =
+    "Tú: " + eleccionJugador +
+    "<br>CPU: " + eleccionCPU +
+    "<br><br>" + resultado;
 
-            if (eleccionJugador === eleccionCPU) {
-                resultado = "Empate";
-            }
-            else if (
-                (eleccionJugador === "Piedra" && eleccionCPU === "Tijeras") ||
-                (eleccionJugador === "Papel" && eleccionCPU === "Piedra") ||
-                (eleccionJugador === "Tijeras" && eleccionCPU === "Papel")
-            ) {
-                resultado = "¡Has ganado!";
-                puntosJugador++;
-            }
-            else {
-                resultado = "Has perdido";
-                puntosCPU++;
-            }
+    document.getElementById("contador").innerHTML =
+    "Tú " + puntosJugador + " - " + puntosCPU + " CPU";
+}
 
-            document.getElementById("resultado").innerHTML =
-                "Tú: " + eleccionJugador +
-                "<br>CPU: " + eleccionCPU +
-                "<br><br>" + resultado;
-
-            document.getElementById("contador").innerHTML =
-                "Tú " + puntosJugador + " - " + puntosCPU + " CPU";
-        }
-
-    </script>
+</script>
 
 </head>
 
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <h1>Piedra, Papel o Tijeras</h1>
+<h1>Piedra, Papel o Tijeras</h1>
 
-        <span id="contador">Tú 0 - 0 CPU</span>
+<span id="contador">Tú 0 - 0 CPU</span>
 
-        <input type="image" src="Piedra.png" alt="Piedra" onclick="jugar('Piedra')">
-        <input type="image" src="Papel.png" alt="Papel" onclick="jugar('Papel')">
-        <input type="image" src="Tijeras.png" alt="Tijeras" onclick="jugar('Tijeras')">
+<input type="image" src="Piedra.png" onclick="jugar('Piedra 🪨')">
+<input type="image" src="Papel.png" onclick="jugar('Papel 📄')">
+<input type="image" src="Tijeras.png" onclick="jugar('Tijeras ✂️')">
 
-        <div id="resultado" class="resultado"></div>
+<div id="resultado" class="resultado"></div>
 
-    </div>
+</div>
 
 </body>
 
